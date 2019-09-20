@@ -12,6 +12,7 @@ import android.preference.CheckBoxPreference
 import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
+import android.preference.SwitchPreference
 import android.provider.DocumentsContract
 import android.provider.Settings
 import android.util.Log
@@ -20,11 +21,14 @@ import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
 import androidx.documentfile.provider.DocumentFile
 import com.zeapo.pwdstore.autofill.AutofillPreferenceActivity
 import com.zeapo.pwdstore.crypto.PgpActivity
 import com.zeapo.pwdstore.git.GitActivity
 import com.zeapo.pwdstore.utils.PasswordRepository
+import com.zeapo.pwdstore.utils.auth.AuthenticationResult
+import com.zeapo.pwdstore.utils.auth.Authenticator
 import org.apache.commons.io.FileUtils
 import org.openintents.openpgp.util.OpenPgpUtils
 import java.io.File
@@ -177,6 +181,35 @@ class UserPreference : AppCompatActivity() {
                     false
                 }
             }
+            /*
+            (findPreference("biometric_auth") as SwitchPreference)?.apply {
+                val isFingerprintSupported = BiometricManager.from(requireContext()).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
+                if (!isFingerprintSupported) {
+                    isEnabled = false
+                    isChecked = false
+                    summary = getString(R.string.biometric_auth_summary_error)
+                } else {
+                    setOnPreferenceClickListener {
+                        val checked = isChecked
+                        Authenticator(requireContext()) { result ->
+                            when (result) {
+                                is AuthenticationResult.Success -> {
+                                    // Apply the changes
+                                    prefs.fingerprintAuth = checked
+                                }
+                                else -> {
+                                    // If any error occurs, revert back to the previous state. This
+                                    // catch-all clause includes the cancellation case.
+                                    prefs.fingerprintAuth = !checked
+                                    isChecked = !checked
+                                }
+                            }
+                        }.authenticate()
+                        true
+                    }
+                }
+            }
+            */
         }
 
         override fun onStart() {

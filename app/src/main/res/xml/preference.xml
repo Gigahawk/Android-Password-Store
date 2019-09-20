@@ -87,6 +87,10 @@
             android:entryValues="@array/sort_order_values"
             android:persistent="true"
             />
+        <SwitchPreferenceCompat
+            android:key="biometric_auth"
+            android:title="@string/biometric_auth_title"
+            android:summary="@string/biometric_auth_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_autofill_title">
